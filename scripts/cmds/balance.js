@@ -220,9 +220,23 @@ module.exports={
             await fs.writeFile(imgPath,img);
 
             await message.reply({
-                body:`${user.name}\nBalance: ${CURRENCY_SYMBOL}${formatShortBalance(balance)}`,
-                attachment:fs.createReadStream(imgPath)
-            });
+    body: 
+`╭───〔 🏦 ANNIE'S BANK 〕───╮
+│ 👤 ${user.name}
+│ 💰 Balance: ${CURRENCY_SYMBOL}${formatShortBalance(balance)}
+│──────────────────
+📌 Commands:
+• deposit
+• withdraw
+• balance
+• interest
+• transfer
+• richest
+• loan
+• payloan
+╰────────────────────╯`,
+    attachment: fs.createReadStream(imgPath)
+});
 
             message.reaction("✅",event.messageID);
             setTimeout(()=>fs.unlink(imgPath).catch(()=>{}),5000);
