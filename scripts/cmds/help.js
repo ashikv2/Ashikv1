@@ -48,7 +48,7 @@ module.exports = {
     /* ================= HELP MENU ================= */
     let msg =
       `╔════════════════════════════════════════════╗\n` +
-      `║        🤖 𝗔𝗦𝗛𝗜𝗞 𝗕𝗢𝗧 - 𝗛𝗘𝗟𝗣 🤖        ║\n` +
+      `║        🤖✨ 𝗔𝗦𝗛𝗜𝗞 𝗕𝗢𝗧 - 𝗛𝗘𝗟𝗣 ✨🤖        ║\n` +
       `╚════════════════════════════════════════════╝\n\n`;
 
     /* ===== GROUP COMMANDS BY CATEGORY ===== */
@@ -62,7 +62,7 @@ module.exports = {
 
     for (const cat in categories) {
       msg += `⧉───────[ 📂 ${cat.toUpperCase()} ]───────⧉\n`;
-      msg += `│ ❖ ${categories[cat].join(" × ")}\n`;
+      msg += `│ ❖ ${categories[cat].join(" ✦ ")}\n`;
       msg += `⧉────────────────────────────────⧉\n\n`;
     }
 
@@ -74,8 +74,8 @@ module.exports = {
 
     /* ===== OWNER INFO ===== */
     msg += `👑 OWNER : ✦ ASHIK ✦\n`;
-    msg += `🔗 FACEBOOK : https://www.facebook.com/profile.php?id=61578644536780\n`;
-    msg += `🧾 TOTAL COMMANDS : ${commands.length}\n`;
+    msg += `🔗 FACEBOOK : 🌐 https://www.facebook.com/profile.php?id=61578644536780\n`;
+    msg += `🧾 TOTAL COMMANDS : 📜 ${commands.length}\n`;
 
     /* ================= IMAGE ATTACHMENT ================= */
     const imagePath = path.join(__dirname, "helppic", "banner.png");
