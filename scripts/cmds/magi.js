@@ -26,13 +26,16 @@ module.exports = {
   },
 
   onStart: async function ({ event, api }) {
-    try {
-      if (!event.mentions || Object.keys(event.mentions).length === 0) {
-        return api.sendMessage(
-          "❌ একজনকে mention করো!\nউদাহরণ: magi @someone",
-          event.threadID
-        );
-      }
+  onStart: async function ({ event, api }) {
+  try {
+
+    // 🔒 ADMIN ONLY CHECK
+    if (!global.config.ADMINBOT.includes(event.senderID)) {
+      return api.sendMessage(
+        "⛔ এই কমান্ড শুধু Bot Admin ব্যবহার করতে পারবে!",
+        event.threadID
+      );
+  }
 
       const senderID = event.senderID;
       const girlID = Object.keys(event.mentions)[0];
