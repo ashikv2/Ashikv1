@@ -152,7 +152,7 @@ module.exports = {
 
       /* 📨 Message */
       await message.send({
-        body: `✨ Welcome ${userName}!\nEnjoy your stay in ${threadName} 💖`,
+        body: `✨ Assalamu Alaikum💥 ${userName}!\nWellcome to🧨 ${threadName} 💖`,
         attachment: fs.createReadStream(imgPath)
       });
 
