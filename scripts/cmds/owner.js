@@ -3,8 +3,6 @@ const fs = require("fs-extra");
 const path = require("path");
 const axios = require("axios");
 
-const OWNER_UID = "61578644536780"; // 🔴 নিজের UID বসাও
-
 /* 👤 WORKING PROFILE PICTURE SYSTEM */
 async function getProfilePicture(uid) {
   try {
@@ -26,23 +24,22 @@ if (fs.existsSync(path.join(fontDir, "Orbitron-Bold.ttf"))) {
 module.exports = {
   config: {
     name: "owner",
-    version: "3.1",
+    version: "3.2",
     author: "Ashik",
     role: 0,
-    shortDescription: "Neon Galaxy Owner Card",
-    category: "owner",
+    shortDescription: "Neon Galaxy Profile Card",
+    category: "profile",
     guide: "{pn}"
   },
 
   onStart: async function ({ api, event }) {
 
-    if (event.senderID !== OWNER_UID)
-      return api.sendMessage("⛔ Only owner can use this command!", event.threadID);
+    const uid = event.senderID; // 🔥 USER UID
 
     const canvas = createCanvas(900, 1200);
     const ctx = canvas.getContext("2d");
 
-    /* 🖤 BLACK GALAXY BACKGROUND */
+    /* 🖤 BACKGROUND */
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -61,14 +58,13 @@ module.exports = {
     }
     ctx.shadowBlur = 0;
 
-    /* 🌈 RAINBOW FRAME */
+    /* 🌈 FRAME */
     const frameGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
     frameGrad.addColorStop(0, "#ff0000");
-    frameGrad.addColorStop(0.2, "#ff00ff");
-    frameGrad.addColorStop(0.4, "#00ffff");
-    frameGrad.addColorStop(0.6, "#00ff00");
-    frameGrad.addColorStop(0.8, "#ffff00");
-    frameGrad.addColorStop(1, "#ff0000");
+    frameGrad.addColorStop(0.25, "#ff00ff");
+    frameGrad.addColorStop(0.5, "#00ffff");
+    frameGrad.addColorStop(0.75, "#00ff00");
+    frameGrad.addColorStop(1, "#ffff00");
 
     ctx.lineWidth = 10;
     ctx.strokeStyle = frameGrad;
@@ -77,29 +73,13 @@ module.exports = {
     ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
     ctx.shadowBlur = 0;
 
-    /* 🌈 PROFILE IMAGE */
-    const avatar = await getProfilePicture(OWNER_UID);
+    /* 👤 PROFILE IMAGE */
+    const avatar = await getProfilePicture(uid);
     const cx = canvas.width / 2;
     const cy = 220;
     const r = 130;
 
     if (avatar) {
-      const ring = ctx.createLinearGradient(cx - r, 0, cx + r, 0);
-      ring.addColorStop(0, "#ff0000");
-      ring.addColorStop(0.25, "#ff00ff");
-      ring.addColorStop(0.5, "#00ffff");
-      ring.addColorStop(0.75, "#00ff00");
-      ring.addColorStop(1, "#ffff00");
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, r + 12, 0, Math.PI * 2);
-      ctx.strokeStyle = ring;
-      ctx.lineWidth = 8;
-      ctx.shadowBlur = 35;
-      ctx.shadowColor = "#ffffff";
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
       ctx.save();
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -110,77 +90,44 @@ module.exports = {
 
     /* 🧑 NAME */
     ctx.textAlign = "center";
-    ctx.font = "46px Orbitron";
+    ctx.font = "42px Orbitron";
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("MOHAMMAD ASHIKUR RAHMAN", cx, 420);
+    ctx.fillText("USER PROFILE CARD", cx, 420);
 
-    ctx.font = "24px Orbitron";
+    ctx.font = "22px Orbitron";
     ctx.fillStyle = "#00ffff";
-    ctx.fillText("SYSTEM ADMINISTRATOR", cx, 455);
+    ctx.fillText("NEON GALAXY SYSTEM", cx, 455);
 
-    /* 📦 INFO BOX FUNCTION (FIXED) */
-    function infoBox(x, y, title, value, boxGlow, textGlow) {
-      const w = 360;
-      const h = 100;
-
-      ctx.fillStyle = "rgba(0,0,0,0.75)";
-      ctx.shadowBlur = 22;
-      ctx.shadowColor = boxGlow;
-      ctx.fillRect(x, y, w, h);
-      ctx.shadowBlur = 0;
-
-      ctx.textAlign = "left";
-      ctx.font = "18px Orbitron";
-      ctx.fillStyle = "#cccccc";
-      ctx.fillText(title.toUpperCase(), x + 20, y + 34);
-
-      ctx.font = "28px Orbitron";
-      ctx.fillStyle = "#ffffff";
+    /* 📦 INFO BOX */
+    function infoBox(x, y, title, value, glow) {
+      ctx.fillStyle = "rgba(0,0,0,0.7)";
       ctx.shadowBlur = 20;
-      ctx.shadowColor = textGlow;
-      ctx.fillText(value, x + 20, y + 74);
+      ctx.shadowColor = glow;
+      ctx.fillRect(x, y, 360, 90);
       ctx.shadowBlur = 0;
+
+      ctx.font = "18px Orbitron";
+      ctx.fillStyle = "#aaa";
+      ctx.fillText(title, x + 20, y + 32);
+
+      ctx.font = "26px Orbitron";
+      ctx.fillStyle = "#fff";
+      ctx.fillText(value, x + 20, y + 65);
     }
 
-    /* ⬅ LEFT (PURPLE BOX + PINK TEXT) */
-    infoBox(80, 520, "Location", "Dhaka", "#a855f7", "#ff69b4");
-    infoBox(80, 650, "Relationships", "Single", "#a855f7", "#ff69b4");
-    infoBox(80, 780, "WhatsApp", "01976994818", "#a855f7", "#ff69b4");
+    infoBox(80, 540, "User ID", uid, "#a855f7");
+    infoBox(460, 540, "Bot", "ANNIE'S BB'Z", "#22c55e");
 
-    /* ➡ RIGHT (GREEN BOX + YELLOW TEXT) */
-    infoBox(460, 520, "Class", "Secret", "#22c55e", "#facc15");
-    infoBox(460, 650, "Facebook", "ASHIK", "#22c55e", "#facc15");
-    infoBox(460, 780, "Religion", "Islam", "#22c55e", "#facc15");
+    /* 🌈 FOOTER */
+    ctx.fillStyle = frameGrad;
+    ctx.fillRect(0, 1040, canvas.width, 90);
 
-    /* 🌈 RAINBOW BOT NAME BAR */
-    const footerGrad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    footerGrad.addColorStop(0, "#ff0000");
-    footerGrad.addColorStop(0.2, "#ff00ff");
-    footerGrad.addColorStop(0.4, "#00ffff");
-    footerGrad.addColorStop(0.6, "#00ff00");
-    footerGrad.addColorStop(0.8, "#ffff00");
-    footerGrad.addColorStop(1, "#ff0000");
-
-    ctx.fillStyle = footerGrad;
-    ctx.shadowBlur = 30;
-    ctx.shadowColor = "#ffffff";
-    ctx.fillRect(0, 1040, canvas.width, 95);
-    ctx.shadowBlur = 0;
-
-    ctx.font = "30px Orbitron";
+    ctx.font = "28px Orbitron";
     ctx.fillStyle = "#000";
-    ctx.textAlign = "left";
-    ctx.fillText("BOT NAME : ANNIE'S BB'Z", 40, 1098);
+    ctx.textAlign = "center";
+    ctx.fillText("ANNIE'S BB'Z • PROFILE SYSTEM", cx, 1095);
 
-    const now = new Date();
-    ctx.textAlign = "right";
-    ctx.fillText(
-      now.toLocaleDateString() + "  " + now.toLocaleTimeString(),
-      canvas.width - 40,
-      1098
-    );
-
-    const filePath = path.join(cacheDir, "owner_card.png");
+    const filePath = path.join(cacheDir, `profile_${uid}.png`);
     fs.writeFileSync(filePath, canvas.toBuffer());
 
     api.sendMessage(
